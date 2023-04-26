@@ -7,13 +7,26 @@
       call output
       end 
 
-      subroutine input
-        common /matrix/ al,di,ia, X, V, Y, dim, maxdim
+      subroutine input(X)
+        common /matrix/ al,di,ia, V, Y, dim, maxdim
         
         open (1,file = 'dim.txt')
         read (1, *) , dim
         close(1)
-        DIMENSION di(dim)
+
+        di = 1
+        ia = dim+1
+        al = 2*dim+2
+        
+        
+        open (4, file = 'ia.txt')
+        do i = ia, ia+dim+1
+            read(4, *) X(i)
+        end do
+        close (4)
+
+        V = X(ia+dim+1)-X(ia+dim)
+
 
         open (2, file = 'DI.txt')
         do i = 0, dim-1
@@ -21,11 +34,7 @@
         end do
         close (2)
 
-        open (4, file = 'ia.txt')
-        do i = 0, dim
-            read(4, *) ia(i)
-        end do
-        close (4)
+
 
         open (5, file = 'AL.txt')
         do i = 1, dim
