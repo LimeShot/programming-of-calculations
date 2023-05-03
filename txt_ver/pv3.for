@@ -27,10 +27,8 @@
         al = 2*dim+2
         
         open (78, file = 'IA.txt')
-        print*,'IA'
         do i = ia, ia+dim
             read(78, *) X(i)
-            print*,i,' ',X(i)
         end do
         close (78)
 
@@ -39,26 +37,20 @@
         ans = V+Y
 
         open (2, file = 'DI.txt')
-        print*,'DI'
         do i = 1,dim 
             read(2, *) X(i)
-            print*,i,' ',X(i)
         end do
         close (2)
 
         open (5, file = 'AL.txt')
-        print*,'Al'
         do i = al, al+Y-1
           read(5, *) X(i)
-          print*,i,' ',X(i)
         end do
         close (5)
 
         open (88, file = 'Vector.txt')
-        print*,'Vector'
         do i = V, V+dim-1
             read(88, *) X(i)
-            print*,i,' ',X(i)
         end do
         close(88)
       end
@@ -88,7 +80,7 @@
         do i=1,dim
           write(66, 8) ans(i)
         end do
-   8   format(E11.4)  
+   8   format(F11.4)  
       end
 
       subroutine check()
@@ -97,7 +89,8 @@
         common /matrix/al, di, ia, V, maxdim, ans
         integer al,di,ia,V,Y,dim,maxdim,ans
         if(maxdim.LT.ans+Y) then
-           print*, 'You have posted a lot cringe. It takes too much memory'
+           print*, 'You have posted a lot cringe. It takes too much 
+     >     memory'
            stop
         end IF
       end
