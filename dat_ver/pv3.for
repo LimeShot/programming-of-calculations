@@ -37,7 +37,7 @@
         common /musthave/ Y, dim
         common /matrix/al, di, ia, V, maxdim, ans
         integer al,di,ia,V,Y,dim,maxdim,ans,i
-        real X(maxdim) 
+        integer X(maxdim) 
         open (78, file = 'IA.dat',recl=4,access='direct',
      >  form='unformatted')
         print*,'IA'
@@ -92,8 +92,8 @@
       subroutine calc(ia,al,di,V,ans)
         IMPLICIT NONE
         common /musthave/ Y,dim
-        integer Y,dim,i,k,ind
-        real al(Y),di(dim),V(Y),ans(dim),ia(dim+1)
+        integer Y,dim,i,k,ind,ia(dim+1)
+        real al(Y),di(dim),V(Y),ans(dim)
         do i = 1, dim
             ans(i)= ans(i)+di(i)*V(i)
             print*,i, ia(i+1)-ia(i), ia(i)
@@ -147,7 +147,7 @@
         else
           do i=1,len
             read (14,*) itmp
-            write(41,rec=i)real(itmp)
+            write(41,rec=i) itmp
           end do
         end IF
         close(14)
