@@ -9,7 +9,7 @@
 
       subroutine input(X)
         common /matrix/ al,di,ia, V, Y, dim, maxdim
-        
+        real X(maxdim)
         open (1,file = 'dim.txt')
         read (1, *) , dim
         close(1)
@@ -29,17 +29,15 @@
 
 
         open (2, file = 'DI.txt')
-        do i = 0, dim-1
-            read(2, *) di(i)
+        do i = di,dim 
+            read(2, *) X(i)
         end do
         close (2)
 
 
 
         open (5, file = 'AL.txt')
-        do i = 1, dim
-            do k = ia(i-1), ia(i)
-            read(2, *) al(k)
-            end do
+        do i = al, al+V
+          read(2, *) X(i)
         end do
         close (2)
