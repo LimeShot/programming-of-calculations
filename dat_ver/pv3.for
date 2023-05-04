@@ -6,8 +6,8 @@
         real X(1000000)
         maxdim = 1000000
         call prim_input()
-        call TXT2DAT('IA',dim+1,'i')
-        call cringe_input()
+        call TXT2DAT('IA',dim+1,'r')
+        call cringe_input(X)
         call TXT2DAT('AL',Y,'r')
         call TXT2DAT('DI',dim,'r')
         call TXT2DAT('VC',dim,'r')
@@ -32,12 +32,12 @@
         al = 2*dim+2
       end
 
-      subroutine cringe_input()
+      subroutine cringe_input(X)
         Implicit NONE
         common /musthave/ Y, dim
         common /matrix/al, di, ia, V, maxdim, ans
         integer al,di,ia,V,Y,dim,maxdim,ans,i
-        integer X(maxdim) 
+        real X(maxdim) 
         open (78, file = 'IA.dat',recl=4,access='direct',
      >  form='unformatted')
         print*,'IA'
@@ -46,7 +46,6 @@
             print*,i,' ',X(i)
         end do
         close (78)
-
         Y = int(X(ia+dim))-1
         V = al+Y
         ans = V+Y
@@ -92,8 +91,8 @@
       subroutine calc(ia,al,di,V,ans)
         IMPLICIT NONE
         common /musthave/ Y,dim
-        integer Y,dim,i,k,ind,ia(dim+1)
-        real al(Y),di(dim),V(Y),ans(dim)
+        integer Y,dim,i,k,ind
+        real al(Y),di(dim),V(Y),ans(dim),ia(dim+1)
         do i = 1, dim
             ans(i)= ans(i)+di(i)*V(i)
             print*,i, ia(i+1)-ia(i), ia(i)
