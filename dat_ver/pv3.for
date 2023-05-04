@@ -6,11 +6,11 @@
         real X(1000000)
         maxdim = 1000000
         call prim_input()
-        call TXT2DAT('IA',dim+1,'r')
+        call TXT2DAT('IA',dim+1)
         call cringe_input(X)
-        call TXT2DAT('AL',Y,'r')
-        call TXT2DAT('DI',dim,'r')
-        call TXT2DAT('VC',dim,'r')
+        call TXT2DAT('AL',Y)
+        call TXT2DAT('DI',dim)
+        call TXT2DAT('VC',dim)
         call sec_input(X(1))
        !call calc(X(ia),   X(al),    X(di),    X(V),    X(ans))
         call calc(X(dim+1),X(2*dim+2),X(1),X(2*dim+2+Y),X(V+Y))
@@ -129,26 +129,18 @@
         end IF
       end
       
-      subroutine TXT2DAT(name,len,ty)
+      subroutine TXT2DAT(name,len)
         Implicit NONE
-        CHARACTER name*2,ty*1
+        CHARACTER name*2
         integer len, i
         real rtmp
-        integer itmp
         open(14,file=name//'.txt')
         open(41,file=name//'.dat',access='direct',recl=4,
      >  form='unformatted')
-        if(ty.eq.'r') then
-          do i=1,len
-            read (14,*) rtmp
-            write(41,rec=i)rtmp
-          end do
-        else
-          do i=1,len
-            read (14,*) itmp
-            write(41,rec=i) itmp
-          end do
-        end IF
+        do i=1,len
+          read (14,*) rtmp
+          write(41,rec=i)rtmp
+        end do
         close(14)
         close(41)
       end
