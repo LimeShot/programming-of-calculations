@@ -10,7 +10,8 @@
         call calc(X(dim+1),X(2*dim+2),X(1),X(2*dim+2+Y),X(V+Y))
         call check
         call output(X(ans))
-      end 
+        call MatOutput(X(dim+1),X(2*dim+2),X(1))
+      end
 
       subroutine input(X)
         Implicit NONE
@@ -80,6 +81,7 @@
         do i=1,dim
           write(66, 8) ans(i)
         end do
+        close(66)
    8   format(F11.4)  
       end
 
@@ -94,4 +96,32 @@
            stop
         end IF
       end
-      
+
+      subroutine MatOutput(ia,al,di)
+        IMPLICIT NONE
+        common /musthave/Y, dim
+        INTEGER dim,i,j,k,Y,m,ind 
+        REAL di(dim),al(Y),ia(dim+1)
+        OPEN(67, file='ma.txt')
+        do i=1,dim
+          do k = 1, i-int(ia(i+1)-ia(i))-1 
+            write(67,10) 0.0
+          end do
+          do j = 1, int(ia(i+1)-ia(i))
+            WRITE(67,10) al(int(ia(i))+j-1)
+          end do
+          write(67,10)di(i)
+          do m = i+1, dim
+            ind = m-int(ia(m+1)-ia(m))-1
+            if(ind.LT.i) then 
+              write(67,10)al(int(ia(m)+i-ind-1))
+            else 
+              write(67,10) 0.0
+            end if
+          end do
+          write(67,99)
+        end do
+  10    FORMAT(F11.4$)
+  99    FORMAT(' ')
+        !close(67)
+      end
