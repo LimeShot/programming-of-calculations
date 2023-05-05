@@ -100,7 +100,7 @@
       subroutine MatOutput(ia,al,di)
         IMPLICIT NONE
         common /musthave/Y, dim
-        INTEGER dim,i,j,k,Y,m,ind 
+        INTEGER dim,i,j,k,Y,m, elem
         REAL di(dim),al(Y),ia(dim+1)
         OPEN(67, file='ma.txt')
         do i=1,dim
@@ -112,9 +112,9 @@
           end do
           write(67,10)di(i)
           do m = i+1, dim
-            ind = m-int(ia(m+1)-ia(m))-1
-            if(ind.LT.i) then 
-              write(67,10)al(int(ia(m)+i-ind-1))
+            elem = m-int(ia(m+1)-ia(m))-1
+            if(elem.LT.i) then 
+              write(67,10)al(int(ia(m)+i-elem-1))
             else 
               write(67,10) 0.0
             end if
