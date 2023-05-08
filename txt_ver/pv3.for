@@ -114,7 +114,8 @@
           do m = i+1, dim
             elem = m-int(ia(m+1)-ia(m))-1
             if(elem.LT.i) then 
-              write(67,10)al(int(ia(m)+i-elem-1))
+              write(67,10)al(i-m+int(ia(m+1)))
+                            
             else 
               write(67,10) 0.0
             end if
@@ -123,5 +124,25 @@
         end do
   10    FORMAT(F11.4$)
   99    FORMAT(' ')
-        !close(67)
+        close(67)
       end
+      
+      subroutine DATTXT(name,len)
+        Implicit NONE
+        CHARACTER name*2
+        integer len, i
+        real rtmp
+        open(14,file=name//'.txt')
+        open(41,file=name//'.dat',access='direct',recl=4,
+     >  form='unformatted')
+        do i=1,len
+          read (41,rec=i) rtmp
+          write(14,rec=i) rtmp
+        end do
+        close(14)
+        close(41)
+      end
+
+
+
+
