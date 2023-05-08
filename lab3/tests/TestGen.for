@@ -46,7 +46,7 @@
         
         open(236,file='AL.dat', access='direct',recl=4)
         cur = 1
-        count = 2
+        count = 1
         do i = 2, dim
           num = 1
           do j = 1, count 
@@ -58,7 +58,7 @@
             end if
             cur = cur+1
           end do
-          if(MOD(i,2).eq.0) then 
+          if(MOD(i,2).eq.1) then 
             count = count+1
           end if
         end do
@@ -75,6 +75,4 @@
         open(238,file='dim.txt')
           write(238,*) dim
         close(238)
-
-
       end

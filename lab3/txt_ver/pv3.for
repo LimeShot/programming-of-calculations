@@ -5,10 +5,9 @@
         integer al,di,ia,V,Y,dim,maxdim,ans
         real X(1000000)
         maxdim = 1000000
-        call input(X(1))
+        call input(X)
        !call calc(X(ia),   X(al),    X(di),    X(V),    X(ans))
         call calc(X(dim+1),X(2*dim+2),X(1),X(2*dim+2+Y),X(V+Y))
-        call check
         call output(X(ans))
         call MatOutput(X(dim+1),X(2*dim+2),X(1))
       end
@@ -26,6 +25,12 @@
         di = 1
         ia = dim+1
         al = 2*dim+2
+
+        if(4*dim+1.GT.maxdim) then
+          print *,'You have posted a lot cringe. It takes too much 
+     >memory'
+          stop
+        end IF
         
         open (78, file = 'IA.txt')
         do i = ia, ia+dim
@@ -36,6 +41,12 @@
         Y = int(X(ia+dim))-1
         V = al+Y
         ans = V+Y
+
+        if(maxdim.LT.ans+Y) then
+          print*, 'You have posted a lot cringe. It takes too much 
+     >memory'
+          stop
+       end IF
 
         open (2, file = 'DI.txt')
         do i = 1,dim 
@@ -85,18 +96,6 @@
    8   format(F11.4)  
       end
 
-      subroutine check()
-        Implicit NONE
-        common /musthave/Y, dim
-        common /matrix/al, di, ia, V, maxdim, ans
-        integer al,di,ia,V,Y,dim,maxdim,ans
-        if(maxdim.LT.ans+Y) then
-           print*, 'You have posted a lot cringe. It takes too much 
-     >     memory'
-           stop
-        end IF
-      end
-
       subroutine MatOutput(ia,al,di)
         IMPLICIT NONE
         common /musthave/Y, dim
@@ -127,7 +126,7 @@
         close(67)
       end
       
-      subroutine DATTXT(name,len)
+      subroutine DAT2TXT(name,len)
         Implicit NONE
         CHARACTER name*2
         integer len, i

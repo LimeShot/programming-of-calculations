@@ -28,6 +28,11 @@
         read (1, *) dim
         close(1)
 
+        if(4*dim+1.GT.maxdim) then
+          print *,'You have posted a lot cringe. It takes too much 
+     >memory'
+          stop
+        end IF
         di = 1
         ia = dim+1
         al = 2*dim+2
