@@ -20,7 +20,7 @@
         RectCalc = 0
         do i = 1, len-1
           RectCalc = RectCalc+(rgrid(i+1)-rgrid(i))*
-     >fun((rgrid(i+1)-rgrid(i))/2)
+     >fun((rgrid(i+1)-rgrid(i))/2.0)
         end do
       end 
 
@@ -28,7 +28,7 @@
         Implicit NONE
         integer len, i
         real rgrid(30), fun, SimpCalc
-        SimpCalc = 1/6*(fun(rgrid(1))*(rgrid(2)-rgrid(1))+
+        SimpCalc = 1.0/6.0*(fun(rgrid(1))*(rgrid(2)-rgrid(1))+
      >fun(rgrid(len))*(rgrid(len)-rgrid(len-1)))
         do i = 1, len-1
           SimpCalc = SimpCalc+(rgrid(i+1)-rgrid(i))*
