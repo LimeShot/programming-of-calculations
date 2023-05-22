@@ -1,22 +1,32 @@
       program IntegralCalc
         Implicit NONE
-        integer N
-        real grid(1000000), rectcringe, RectCalc, simpcringe, SimpCalc
-        real gausscringe, GaussCalc, a, b
-        read*,N, a, b
-        call GridCreate(grid, a, b, N)
-        rectcringe = RectCalc(grid,N+1)
-        print*,'Rectangle',rectcringe
-        simpcringe = SimpCalc(grid,N+1)
-        print*,'Simpson', simpcringe
-        gausscringe = GaussCalc(grid,N+1)
-        print*,'Gauss',gausscringe
+        integer N, i
+        real grid(100000000), rectcringe, RectCalc, simpcringe
+        real gausscringe, GaussCalc, SimpCalc
+        real a, b
+        a = 0.0
+        b = 5.0
+        open(3,file ='Gauss.txt')
+        do i=0,22
+        N=2**i
+         call GridCreate(grid, a, b, N)
+         !rectcringe = RectCalc(grid,N+1)
+        ! print*,'Rectangle', rectcringe
+         !simpcringe = SimpCalc(grid,N+1)
+        ! print*,'Simpson', simpcringe
+         gausscringe = GaussCalc(grid,N+1)
+        ! print*,'Gauss', gausscringe
+        !write(3,228) N
+        write(3,*) gausscringe
+        end do
+  228   FORMAT(I4,$)
+        close(3)
       end
 
       function RectCalc(grid,len)
         Implicit NONE
         integer len, i
-        real grid(1000000), fun, RectCalc  
+        real grid(100000000), fun, RectCalc  
         RectCalc = 0
         do i = 1, len-1
           RectCalc = RectCalc+(grid(i+1)-grid(i))*
@@ -27,7 +37,7 @@
       function SimpCalc(grid,len)
         Implicit NONE
         integer len, i
-        real grid(1000000), fun, SimpCalc
+        real grid(100000000), fun, SimpCalc
         SimpCalc = (fun(grid(1))*(grid(2)-grid(1))+
      >fun(grid(len))*(grid(len)-grid(len-1)))
         do i = 1, len-1
@@ -44,7 +54,7 @@
       function GaussCalc(grid,len)
         Implicit NONE
         integer len, i,k
-        real grid(1000000), fun, GaussCalc, root(2), x
+        real grid(100000000), fun, GaussCalc, root(2), x
         root(1) = (1.0/sqrt(3.0))
         root(2) = (-1.0/sqrt(3.0))
         do i = 1, 2
@@ -58,15 +68,17 @@
       end
 
       function fun(x)
-        real x
-        fun = 5**(-0.5*x)*cos(8.0*x)
+        real x, fun
+        !fun = 5.0**(x*(-0.5))*cos(8.0*x)
+        fun = -x*cos(5.0*x)
+        !fun =(x+2.0)*sin(8.0*x)
       end
 
       subroutine GridCreate(grid, a, b, N)
         Implicit NONE
         integer N, i
         real h, a, b
-        real grid(100000)
+        real grid(100000000)
         h = (b-a)/real(N)
         print*, 'h:', h
         do i = 1, N

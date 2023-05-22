@@ -1,0 +1,4 @@
+pv4.for: *WRN* VA-05 in FMAIN, SIMPCALC is an unreferenced symbol
+pv4.for: *WRN* VA-05 in FMAIN, GAUSSCALC is an unreferenced symbol
+pv4.for: *WRN* VA-05 in FMAIN, GAUSSCRINGE is an unreferenced symbol
+pv4.for: *WRN* VA-05 in FMAIN, SIMPCRINGE is an unreferenced symbol
