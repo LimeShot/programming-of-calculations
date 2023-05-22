@@ -3,22 +3,31 @@
         common /musthave/ Y, dim
         common /matrix/al, di, ia, V, maxdim, ans
         integer al,di,ia,V,Y,dim,maxdim,ans
-        real X(500)
-        maxdim = 500
-        call prim_input()
-       ! call TXT2DAT('IA',dim+1)
-        call cringe_input(X)
-        call check
-       ! call TXT2DAT('AL',Y)
-       ! call TXT2DAT('DI',dim)
-       ! call TXT2DAT('VC',dim)
-        call sec_input(X(1))
+        real X(10000)
+        maxdim = 10000
+        call input(X)
        !call calc(X(ia),   X(al),    X(di),    X(V),    X(ans))
         call calc(X(dim+1),X(2*dim+2),X(1),X(2*dim+2+Y),X(V+Y))
         call output(X(ans))
         call MatOutput(X(dim+1),X(2*dim+2),X(1))
       end 
 
+      subroutine input(X)
+        Implicit NONE
+        common /musthave/ Y, dim
+        common /matrix/al, di, ia, V, maxdim, ans
+        integer al,di,ia,V,Y,dim,maxdim,ans
+        real X(10000)
+        call prim_input()
+       ! call TXT2DAT('IA',dim+1)
+        call cringe_input(X(ia))
+       ! call TXT2DAT('AL',Y)
+       ! call TXT2DAT('DI',dim)
+       ! call TXT2DAT('VC',dim)
+        !              X(di), X(al),     X(V))
+        call sec_input(X(1),X(2*dim+2),X(2*dim+2+Y))
+      end
+      
       subroutine prim_input()
         Implicit NONE
         common /musthave/Y,dim
@@ -31,6 +40,7 @@
         if(4*dim+1.GT.maxdim) then
           print *,'You have posted a lot cringe. It takes too much 
      >memory'
+          pause
           stop
         end IF
         di = 1
@@ -38,48 +48,56 @@
         al = 2*dim+2
       end
 
-      subroutine cringe_input(X)
+      subroutine cringe_input(array)
         Implicit NONE
         common /musthave/ Y, dim
         common /matrix/al, di, ia, V, maxdim, ans
         integer al,di,ia,V,Y,dim,maxdim,ans,i
-        real X(maxdim) 
-        open (78, file = 'IA.dat',recl=4,access='direct',
-     >  form='unformatted')
-        do i = ia, ia+dim
-            read(78, rec=i-ia+1) X(i)
+        integer array
+        dimension array(dim+1) 
+        open (78, file = 'IA.dat',recl=4,access='direct')
+        do i = 1, dim+1
+            read(78, rec=i) array(i)
+            PRINT *, array(i)
         end do
         close (78)
-        Y = int(X(ia+dim))-1
+        Y = (array(dim+1))-1
         V = al+Y
         ans = V+Y
+
+        if(maxdim.LT.ans+dim) then
+          print *,'You have posted a lot cringe. It takes too much 
+     >memory'
+          pause
+          stop
+       end IF
+
       end
 
-      subroutine sec_input(X)
+      subroutine sec_input(di, al, V)
         Implicit NONE
         common /musthave/ Y, dim
-        common /matrix/al, di, ia, V, maxdim, ans
-        integer al,di,ia,V,Y,dim,maxdim,ans,i
-        real X(500)
+        integer Y,dim,i
+        real di(dim),al(Y),V(dim)
 
         open (2, file = 'DI.dat',recl=4,access='direct',
      >  form='unformatted')
         do i = 1,dim 
-            read(2, rec=i) X(i)
+            read(2, rec=i) di(i)
         end do
         close (2)
 
         open (5, file = 'AL.dat',recl=4,access='direct',
      >  form='unformatted')
-        do i = al, al+Y-1
-          read(5, rec=i-al+1) X(i)
+        do i = 1, Y
+          read(5, rec=i) al(i)
         end do
         close (5)
 
         open (88, file = 'VC.dat',recl=4,access='direct',
      >  form='unformatted')
-        do i = V, V+dim-1
-            read(88, rec=i-v+1) X(i)
+        do i = 1, dim
+            read(88, rec=i) V(i)
         end do
         close(88)
       end
@@ -88,13 +106,15 @@
         IMPLICIT NONE
         common /musthave/ Y,dim
         integer Y,dim,i,k,ind
-        real al(Y),di(dim),V(Y),ans(dim),ia(dim+1)
+        real al(Y),di(dim),V(Y),ans(dim)
+        integer ia(dim+1)
+        
         do i = 1, dim
             ans(i)= ans(i)+di(i)*V(i)
-            do k = 1, int(ia(i+1)-ia(i))
-                ind = i-1-int(ia(i+1)-ia(i))+k
-                ans(i)=ans(i)+al(int(ia(i))+k-1)*V(ind)
-                ans(ind)=ans(ind)+V(i)*al(int(ia(i))+k-1)
+            do k = 1, (ia(i+1)-ia(i))
+                ind = i-1-(ia(i+1)-ia(i))+k
+                ans(i)=ans(i)+al((ia(i))+k-1)*V(ind)
+                ans(ind)=ans(ind)+V(i)*al((ia(i))+k-1)
             end do
         end do
       end
@@ -110,18 +130,6 @@
           write(66, 8) ans(i)
         end do
    8   format(F11.4)  
-      end
-
-      subroutine check()
-        Implicit NONE
-        common /musthave/Y, dim
-        common /matrix/al, di, ia, V, maxdim, ans
-        integer al,di,ia,V,Y,dim,maxdim,ans
-        if(maxdim.LT.ans+dim) then
-           print *,'You have posted a lot cringe. It takes too much 
-     >memory'
-           stop
-        end IF
       end
       
       subroutine TXT2DAT(name,len)
@@ -144,21 +152,21 @@
         IMPLICIT NONE
         common /musthave/Y, dim
         INTEGER dim,i,j,k,Y,m, elem
-        REAL di(dim),al(Y),ia(dim+1)
+        REAL di(dim),al(Y)
+        integer ia(dim+1)
         OPEN(67, file='ma.txt')
         do i=1,dim
-          do k = 1, i-int(ia(i+1)-ia(i))-1 
+          do k = 1, i-(ia(i+1)-ia(i))-1 
             write(67,10) 0.0
           end do
-          do j = 1, int(ia(i+1)-ia(i))
-            WRITE(67,10) al(int(ia(i))+j-1)
+          do j = 1, ia(i+1)-ia(i)
+            WRITE(67,10) al((ia(i))+j-1)
           end do
           write(67,10)di(i)
           do m = i+1, dim
-            elem = m-int(ia(m+1)-ia(m))-1
+            elem = m-(ia(m+1)-ia(m))-1
             if(elem.LT.i) then 
-              write(67,10)al(i-m+int(ia(m+1)))
-                            
+              write(67,10)al(i-m+(ia(m+1)))        
             else 
               write(67,10) 0.0
             end if

@@ -15,6 +15,7 @@
 
           if(MOD(count,4).GE.2)then
             if(flag.eq.0) then
+              num=num+1
               flag = 1
             else
               flag = 0
@@ -33,7 +34,7 @@
         flag = 0
         count = 1
         cringe = 0
-        write(235,rec = 1) inum
+        write(235,rec = 1)inum
         do i = 1, dim
           if(MOD(count,2).eq.0)then
             cringe = cringe+1
@@ -52,6 +53,7 @@
           do j = 1, count 
             if(MOD(j,2).eq.1)then
               write(236,rec = cur) num
+              num = num+1
             else
               write(236,rec = cur) 0
             end if
